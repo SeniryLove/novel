@@ -1,4 +1,6 @@
 import { openai } from "@ai-sdk/openai";
+
+import { groq } from "@ai-sdk/groq";
 import { Ratelimit } from "@upstash/ratelimit";
 import { kv } from "@vercel/kv";
 import { streamText } from "ai";
@@ -9,8 +11,8 @@ export const runtime = "edge";
 
 export async function POST(req: Request): Promise<Response> {
   // Check if the OPENAI_API_KEY is set, if not return 400
-  if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === "") {
-    return new Response("Missing OPENAI_API_KEY - make sure to add it to your .env file.", {
+  if (!process.env.GROQ_API_KEY || process.env.GROQ_API_KEY === "") {
+    return new Response("Missing GROQ_API_KEY - make sure to add it to your .env file.", {
       status: 400,
     });
   }
@@ -122,7 +124,7 @@ export async function POST(req: Request): Promise<Response> {
     topP: 1,
     frequencyPenalty: 0,
     presencePenalty: 0,
-    model: openai("gpt-4o-mini"),
+    model: groq('llama-3.3-70b-versatile'),
   });
 
   return result.toDataStreamResponse();
