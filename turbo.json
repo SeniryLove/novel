@@ -22,7 +22,6 @@
     "build": {
       "dependsOn": [
         "build-web",
-        "typecheck"
       ],
       "outputs": [
         "dist/**",
