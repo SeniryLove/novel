@@ -9,9 +9,19 @@
         "^topo"
       ]
     },
+    "build-web": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/**",
+        ".next/**",
+        "!.next/cache/**"
+      ]
+    },
     "build": {
       "dependsOn": [
-        "^build",
+        "build-web",
         "typecheck"
       ],
       "outputs": [
