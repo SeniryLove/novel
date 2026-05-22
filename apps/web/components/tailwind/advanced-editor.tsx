@@ -35,7 +35,7 @@ const hljs = require("highlight.js");
 const extensions = [...defaultExtensions, slashCommand];
 
 type Props = {
-  page: string,
+  page?: string,
   _initialContent?: JSONContent;
   onSave?: Function;
   editable?: boolean;

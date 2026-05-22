@@ -2,7 +2,7 @@ import BlogEditor from "./BlogEditor";
 import { apiFetch } from "@/lib/api";
 
 type Props = {
-  params: { path: string };
+  params: Promise<{ path: string }>;
 };
 
 type Blog = {
@@ -30,8 +30,8 @@ async function getBlog(path: string): Promise<Blog | null> {
 }
 
 export default async function Page({ params }: Props) {
-  const _params = await params;
-  const blog = await getBlog(_params.path);
+  const { path } = await params;
+  const blog = await getBlog(path);
 
   if (!blog) {
     return (

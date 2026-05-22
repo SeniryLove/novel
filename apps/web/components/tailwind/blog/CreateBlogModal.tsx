@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 type Props = {
   open: boolean;
   onClose: () => void;
+  onExists: () => void;
+  onSuccess: (path: string) => void;
 };
 
 export default function CreateBlogModal({ open, onClose }: Props) {
