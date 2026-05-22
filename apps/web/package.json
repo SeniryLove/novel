@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 next dev",
     "build": "next build",
     "start": "next start",
     "lint": "biome lint .",
@@ -20,6 +20,7 @@
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
     "@tailwindcss/typography": "^0.5.10",
+    "@tiptap/html": "^3.23.6",
     "@upstash/ratelimit": "^1.0.1",
     "@vercel/analytics": "^1.2.2",
     "@vercel/blob": "^0.22.1",

@@ -28,13 +28,29 @@ import { uploadFn } from "./image-upload";
 import { TextButtons } from "./selectors/text-buttons";
 import { slashCommand, suggestionItems } from "./slash-command";
 
+import { apiFetch } from "@/lib/api";
+
 const hljs = require("highlight.js");
 
 const extensions = [...defaultExtensions, slashCommand];
 
-const TailwindAdvancedEditor = () => {
+type Props = {
+  page: string,
+  _initialContent?: JSONContent;
+  onSave?: Function;
+  editable?: boolean;
+};
+
+
+const TailwindAdvancedEditor = ({
+  page,
+  _initialContent,
+  onSave,
+  editable,
+  }: Props) => {
   const [initialContent, setInitialContent] = useState<null | JSONContent>(null);
   const [saveStatus, setSaveStatus] = useState("Saved");
+  const [_editable, setEditable] = useState(editable);
   const [charsCount, setCharsCount] = useState();
 
   const [openNode, setOpenNode] = useState(false);
@@ -59,10 +75,30 @@ const TailwindAdvancedEditor = () => {
     window.localStorage.setItem("html-content", highlightCodeblocks(editor.getHTML()));
     window.localStorage.setItem("novel-content", JSON.stringify(json));
     window.localStorage.setItem("markdown", editor.storage.markdown.getMarkdown());
+    // const res = await apiFetch(`/api/Blog?path=${page}`, {
+    //   method: "PUT",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     content: JSON.stringify(json), // JSONContent or string
+    //   }),
+    // });
+    // const data = await res.json();
+    if(editable){
+      onSave?.(page, json);
+    }
+      
+    
     setSaveStatus("Saved");
   }, 500);
 
   useEffect(() => {
+    //const content = window.localStorage.getItem("novel-content");
+    if (_initialContent) {
+      setInitialContent(_initialContent);
+      return;
+    }
     const content = window.localStorage.getItem("novel-content");
     if (content) setInitialContent(JSON.parse(content));
     else setInitialContent(defaultEditorContent);
@@ -72,17 +108,25 @@ const TailwindAdvancedEditor = () => {
 
   return (
     <div className="relative w-full max-w-screen-lg">
+      {editable && (
       <div className="flex absolute right-5 top-5 z-10 mb-5 gap-2">
         <div className="rounded-lg bg-accent px-2 py-1 text-sm text-muted-foreground">{saveStatus}</div>
         <div className={charsCount ? "rounded-lg bg-accent px-2 py-1 text-sm text-muted-foreground" : "hidden"}>
           {charsCount} Words
         </div>
       </div>
+      )}
+      {!editable && (
+      <div className="flex absolute right-5 top-5 z-10 mb-5 gap-2">
+        <div className="rounded-lg bg-accent px-2 py-1 text-sm text-muted-foreground">Read Only</div>
+      </div>
+      )}
       <EditorRoot>
         <EditorContent
           initialContent={initialContent}
           extensions={extensions}
           className="relative min-h-[500px] w-full max-w-screen-lg border-muted bg-background sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:shadow-lg"
+          editable={editable}
           editorProps={{
             handleDOMEvents: {
               keydown: (_view, event) => handleCommandNavigation(event),
@@ -95,6 +139,9 @@ const TailwindAdvancedEditor = () => {
             },
           }}
           onUpdate={({ editor }) => {
+            if (!editable){
+              return;
+            }
             debouncedUpdates(editor);
             setSaveStatus("Unsaved");
           }}

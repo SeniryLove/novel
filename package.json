@@ -7,6 +7,7 @@
     "version:packages": "turbo build && changeset version",
     "build": "turbo build",
     "dev": "turbo dev",
+    "deploy:web": "gh-pages -d apps/web/out",
     "format": "turbo format --continue --",
     "format:fix": "turbo format --continue -- --write",
     "lint": "turbo lint --continue --",
@@ -26,6 +27,7 @@
     "@biomejs/biome": "^1.9.4",
     "@commitlint/cli": "^19.6.1",
     "@commitlint/config-conventional": "^19.6.0",
+    "gh-pages": "^6.3.0",
     "husky": "^9.1.7",
     "postcss": "^8.5.1"
   },

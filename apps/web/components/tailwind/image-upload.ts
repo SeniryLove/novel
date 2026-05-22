@@ -1,8 +1,9 @@
 import { createImageUpload } from "novel";
 import { toast } from "sonner";
+import { apiFetch } from "@/lib/api";
 
 const onUpload = (file: File) => {
-  const promise = fetch("/api/upload", {
+  const promise = apiFetch("/api/Upload", {
     method: "POST",
     headers: {
       "content-type": file?.type || "application/octet-stream",
@@ -51,8 +52,8 @@ export const uploadFn = createImageUpload({
       toast.error("File type not supported.");
       return false;
     }
-    if (file.size / 1024 / 1024 > 20) {
-      toast.error("File size too big (max 20MB).");
+    if (file.size / 1024 / 1024 > 10) {
+      toast.error("File size too big (max 10MB).");
       return false;
     }
     return true;

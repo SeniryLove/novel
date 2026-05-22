@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
+  //assetPrefix: "/novel/",
+  trailingSlash: true,
+/*
   redirects: async () => {
     return [
       {
@@ -45,7 +49,10 @@ const nextConfig = {
       },
     ];
   },
+  
   productionBrowserSourceMaps: true,
+  */
+ 
 };
 
 module.exports = nextConfig;
